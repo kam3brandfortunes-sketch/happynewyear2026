@@ -1,24 +1,19 @@
 // --- Configuration ---
-// Folder where your images are stored
 const imageFolder = "images/";
+const totalImages = 6; // increase this as you add more images
 
-// Number of images currently available
-// (You can just update this number when you add more)
-const totalImages = 6;
+// Possible file extensions to try
+const extensions = [".jpg", ".jpeg", ".png", ".webp"];
 
-// Automatically generate file names like img1.jpg, img2.jpg, ...
-const imageList = Array.from({ length: totalImages }, (_, i) => `${imageFolder}img${i + 1}.jpg`);
-
-// DOM elements for the two halves
+// DOM elements
 const leftHalf = document.getElementById("left-half");
 const rightHalf = document.getElementById("right-half");
 
-// Function to create an image card element
+// Helper: create image card
 function createImageCard(src) {
   const card = document.createElement("div");
   card.className =
     "image-card bg-white rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition duration-300";
-
   card.innerHTML = `
     <img src="${src}" alt="Happy New Year" loading="lazy">
     <div class="p-4 text-center">
@@ -28,19 +23,41 @@ function createImageCard(src) {
   return card;
 }
 
-// Function to render all images evenly split between left/right halves
-function renderImages() {
-  imageList.forEach((src, index) => {
-    const card = createImageCard(src);
+// Try loading each image in multiple formats
+function tryLoadImage(baseName) {
+  return new Promise((resolve) => {
+    let found = false;
+    extensions.forEach((ext) => {
+      const img = new Image();
+      img.src = `${imageFolder}${baseName}${ext}`;
+      img.onload = () => {
+        if (!found) {
+          found = true;
+          resolve(img.src);
+        }
+      };
+      img.onerror = () => {
+        // Do nothing if fails; move to next ext
+      };
+    });
 
-    // Split images evenly (alternate left/right)
-    if (index % 2 === 0) {
-      leftHalf.appendChild(card);
-    } else {
-      rightHalf.appendChild(card);
-    }
+    // If nothing found after 1 second → resolve null
+    setTimeout(() => {
+      if (!found) resolve(null);
+    }, 1000);
   });
 }
 
-// Initialize
+// Render all images
+async function renderImages() {
+  for (let i = 1; i <= totalImages; i++) {
+    const src = await tryLoadImage(`img${i}`);
+    if (src) {
+      const card = createImageCard(src);
+      if (i % 2 === 0) rightHalf.appendChild(card);
+      else leftHalf.appendChild(card);
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", renderImages);
