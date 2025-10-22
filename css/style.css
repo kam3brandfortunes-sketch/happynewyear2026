@@ -1,97 +1,164 @@
-/* General body styling */
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: 'Poppins', sans-serif;
-  scroll-behavior: smooth;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+  color: #333;
 }
 
-/* Header Animation */
-header h1 {
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Smooth section padding and transitions */
-main {
-  transition: all 0.3s ease-in-out;
-}
-
-/* Image Cards */
-.image-card {
-  background: white;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.image-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-/* Image styling */
-.image-card img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.image-card:hover img {
-  transform: scale(1.05);
-}
-
-/* Download button */
-.image-card a {
-  display: inline-block;
-  background: linear-gradient(to right, #ef4444, #dc2626);
+/* Header */
+.header {
+  background-color: #ff4d4f;
   color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.brand {
+  font-size: 1.8rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
   font-weight: 500;
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: color 0.3s;
 }
 
-.image-card a:hover {
-  background: linear-gradient(to right, #dc2626, #b91c1c);
-  transform: translateY(-2px);
+.nav-links li a:hover {
+  color: #ffe066;
 }
 
-/* Responsive Layout */
-@media (max-width: 1024px) {
-  main {
+/* Burger menu for mobile */
+.burger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.burger div {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+}
+
+/* Responsive Header */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    right: 0;
+    top: 70px;
+    background-color: #ff4d4f;
     flex-direction: column;
+    width: 200px;
+    padding: 1rem;
+    display: none;
   }
 
-  #left-half, #right-half {
-    width: 100%;
+  .nav-links.active {
+    display: flex;
   }
 
-  .image-card img {
-    height: 220px;
-  }
-}
-
-@media (max-width: 640px) {
-  header h1 {
-    font-size: 1.8rem;
-  }
-
-  header p {
-    font-size: 1rem;
-  }
-
-  .image-card img {
-    height: 200px;
-  }
-
-  .image-card a {
-    padding: 0.4rem 1rem;
-    font-size: 0.9rem;
+  .burger {
+    display: flex;
   }
 }
 
-/* Footer styling */
-footer {
-  font-weight: 500;
-  letter-spacing: 0.3px;
+/* Gallery Container */
+#gallery {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile: 1 column */
+  gap: 20px;
+  justify-items: center;
+  padding: 1rem;
+}
+
+/* Gallery Card */
+#gallery div {
+  background-color: white;
+  border: 4px solid #fff;  /* White border */
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 90%;          /* Mobile width */
+  max-width: 400px;    /* Desktop max width */
+  transition: transform 0.3s;
+}
+
+#gallery div:hover {
+  transform: scale(1.03);
+}
+
+/* Gallery Image */
+#gallery img {
+  width: 100%;
+  height: 250px;        /* uniform height */
+  object-fit: contain;  /* show full image, no crop */
+}
+
+/* Download Button */
+#gallery a {
+  background-color: #ff4d4f;
+  color: white;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem auto 1rem auto; /* center below image */
+  border-radius: 5px;
+  text-decoration: none;
+  display: block;
+  width: 60%;          /* button width */
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+#gallery a:hover {
+  background-color: #e63c3f;
+}
+
+/* Desktop Layout: 2 columns */
+@media (min-width: 768px) {
+  #gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #gallery div {
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #gallery img {
+    height: 250px;
+  }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  background-color: #ff4d4f;
+  color: white;
+  margin-top: auto;
 }

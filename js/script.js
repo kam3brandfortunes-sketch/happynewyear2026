@@ -1,25 +1,57 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const imageFolder = "images/";
-  const totalImages = 6; // Update this if you add more
-  const leftHalf = document.getElementById("left-half");
-  const rightHalf = document.getElementById("right-half");
+// Burger menu toggle
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('.nav-links');
 
-  for (let i = 1; i <= totalImages; i++) {
-    const src = `${imageFolder}img${i}.jpeg`;
+burger.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
 
-    const card = document.createElement("div");
-    card.className = "image-card bg-white rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition duration-300";
-    card.innerHTML = `
-      <img src="${src}" alt="Happy New Year" loading="lazy">
-      <div class="p-4 text-center">
-        <a href="${src}" download>Download</a>
-      </div>
-    `;
+// Image gallery infinite scroll
+const gallery = document.getElementById('gallery');
+let loaded = 0;
+const totalImages = 6; // ✅ total number of images in your folder
+const perLoad = 6;      // load 6 images per batch
 
-    if (i % 2 === 0) rightHalf.appendChild(card);
-    else leftHalf.appendChild(card);
+function loadImages() {
+  for (let i = loaded + 1; i <= Math.min(loaded + perLoad, totalImages); i++) {
+    const div = document.createElement('div');
+    div.className = "bg-white rounded-lg shadow-lg overflow-hidden flex flex-col";
+
+    const img = document.createElement('img');
+    img.src = `images/img${i}.jpeg`; // ✅ using .jpeg extension
+    img.alt = `Happy New Year ${i}`;
+    img.className = "w-full h-auto object-contain";
+
+    const btnDiv = document.createElement('div');
+    btnDiv.className = "p-4 text-center";
+
+    const a = document.createElement('a');
+    a.href = `images/img${i}.jpeg`;
+    a.download = '';
+    a.className = "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition";
+    a.textContent = "Download";
+
+    btnDiv.appendChild(a);
+    div.appendChild(img);
+    div.appendChild(btnDiv);
+
+    gallery.appendChild(div);
+  }
+  loaded += perLoad;
+}
+
+// Initial load
+loadImages();
+
+// Infinite scroll
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    if (loaded < totalImages) {
+      loadImages();
+    }
   }
 });
+
 
 
 
